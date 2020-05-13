@@ -6,8 +6,8 @@
 
   <form class="form-inline my-2 my-lg-0 ml-auto">
     <input type="file" id="file-selector" accept=".yml" class="d-none" (change)="loadFile($event)" #fileLoad>
-    <button class="btn btn-outline-success my-2 my-sm-0" (click)="fileLoad.click()">Load config.yml</button>
-    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config" (click)="saveFile()">Save config.yml</button>
+    <button class="btn btn-outline-info my-2 my-sm-0" (click)="fileLoad.click()">Load config.yml</button>
+    <button class="btn btn-outline-info my-2 my-sm-0 ml-3" [disabled]="!config" (click)="saveFile()">Save config.yml</button>
     <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config" [class.d-none]="!electronService.isElectron" (click)="generatePak()">Generate .pak</button>
   </form>
 </nav>

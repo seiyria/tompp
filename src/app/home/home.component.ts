@@ -35,6 +35,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.electronService.isElectron) {
+      this.electronService.ipcRenderer.on('display-error', (event, error) => {
+        alert(error);
+      });
+
+      this.electronService.ipcRenderer.on('display-message', (event, message) => {
+        alert(message);
+      });
+
       this.electronService.ipcRenderer.on('set-version', (event, version) => {
         this.ngZone.run(() => {
           this.version = version;
@@ -46,9 +54,11 @@ export class HomeComponent implements OnInit {
 
     if(!this.unrealPak) this.unrealPak = 'UnrealPak.exe';
 
-    Object.keys(this.config.specific || {}).forEach(spec => {
-      this.currentEditNames[spec] = spec;
-    })
+    if(this.config?.specific) {
+      Object.keys(this.config.specific || {}).forEach(spec => {
+        this.currentEditNames[spec] = spec;
+      });
+    }
   }
 
   loadFile($event): void {
@@ -118,7 +128,7 @@ export class HomeComponent implements OnInit {
   }
 
   generatePak(): void {
-
+    this.electronService.ipcRenderer.send('run-app', this.config);
   }
 
 }

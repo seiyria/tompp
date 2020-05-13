@@ -67,25 +67,49 @@ function createWindow(): BrowserWindow {
     win = null;
   });
 
-  ipcMain.on('get-version', (event) => {
-    try {
-      const executable = {
-        darwin: 'macos',
-        linux: 'linux',
-        win32: 'win.exe'
-      };
-
-      const version = childProcess.execFileSync(path.resolve(`types-of-mania-${executable[process.platform]}`), ['--version']);
-
-      event.reply('set-version', version.toString());
-    } catch(e) {
-      console.error('Could not get app version.');
-      console.error(e);
-    }
-  });
-
   return win;
 }
+
+const executable = {
+  darwin: 'macos',
+  linux: 'linux',
+  win32: 'win.exe'
+};
+
+ipcMain.on('get-version', (event) => {
+  try {
+
+    const version = childProcess.execFileSync(
+      path.resolve(`types-of-mania-${executable[process.platform]}`), 
+      ['--version']
+    );
+
+    event.reply('set-version', version.toString());
+  } catch(e) {
+    console.error('Could not get app version.');
+    console.error(e);
+
+    event.reply('display-error', 'Could not get app version.');
+  }
+});
+
+ipcMain.on('run-app', (event, config) => {
+  try {
+
+    const out = childProcess.execFileSync(
+      path.resolve(`types-of-mania-${executable[process.platform]}`), 
+      [`--configJson=${JSON.stringify(config)}`]
+    );
+
+    console.log(out.toString())
+    event.reply('display-message', out.toString());
+  } catch(e) {
+    console.error('Could not run app: ', e.message);
+    console.error(e);
+
+    event.reply('display-error', 'Could not run app.');
+  }
+});
 
 try {
 
