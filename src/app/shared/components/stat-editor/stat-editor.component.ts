@@ -49,7 +49,11 @@ export class StatEditorComponent implements OnInit {
     offMag: 'Offensive Magic',
     drop1: 'Drop Rate (Item 1)',
     drop2: 'Drop Rate (Item 2)',
-    drop3: 'Drop Rate (Item 3)'
+    drop3: 'Drop Rate (Item 3)',
+    dropSpp: 'Base SPP',
+    knockoutDropSpp: 'Knockout SPP',
+    lAttackDropSpp: 'LAttack SPP',
+    chargeAttackDropSpp: 'Charge Attack SPP'
   };
 
   public descriptions = {

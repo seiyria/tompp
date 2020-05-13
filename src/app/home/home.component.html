@@ -7,7 +7,7 @@
   <form class="form-inline my-2 my-lg-0 ml-auto">
     <input type="file" id="file-selector" accept=".yml" class="d-none" (change)="loadFile($event)" #fileLoad>
     <button class="btn btn-outline-success my-2 my-sm-0" (click)="fileLoad.click()">Load config.yml</button>
-    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config">Save config.yml</button>
+    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config" (click)="saveFile()">Save config.yml</button>
     <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config" [class.d-none]="!electronService.isElectron" (click)="generatePak()">Generate .pak</button>
   </form>
 </nav>
@@ -171,10 +171,54 @@
       </div>
       
       <div class="p-2" *ngIf="config">
-        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
-          master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
-          keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
-          salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+        <div class="explainer">
+          <span>
+            Specific modifiers apply to a range of creatures specified by you.
+            <a target="_blank" href="https://github.com/seiyria/Types-of-Mania#configyml">&nbsp;Learn more about how it works here.</a>
+          </span>
+        </div>
+        <ngb-accordion [closeOthers]="true">
+
+          <ngb-panel *ngFor="let specific of config.specific | keyvalue">
+            <ng-template ngbPanelTitle>
+              <div class="d-flex align-items-center justify-content-between" 
+                   (mouseenter)="removeButtonVisibility[specific.key] = true"
+                   (mouseleave)="removeButtonVisibility[specific.key] = false">
+                <div>{{ specific.key }}</div>
+                <div>
+                  <button type="button" 
+                          class="btn btn-sm btn-outline-danger ml-2"
+                          *ngIf="removeButtonVisibility[specific.key]" 
+                          (click)="removeSpecificKey(specific.key)">Remove</button>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+
+              <div class="form-group mb-3">
+                <label><strong>Specific Name Or Filter</strong></label>
+
+                <div class="input-group">
+                  <input type="text" class="form-control" [(ngModel)]="currentEditNames[specific.key]" [value]="specific.key">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="updateSpecificKey(specific.key)">Rename</button>
+                  </div>
+                </div>
+              </div>
+
+              <app-stat-editor [config]="config" [subkey]="['specific', specific.key]" (updateConfig)="updateConfig()"></app-stat-editor>
+            </ng-template>
+          </ngb-panel>
+
+          <ngb-panel (click)="addNewConfigSpecificEntry()">
+            <ng-template ngbPanelTitle>
+              <button class="btn btn-sm btn-outline-primary" (click)="addNewConfigSpecificEntry()">+ Add New Specific Creature</button>
+            </ng-template>
+            <ng-template ngbPanelContent>
+            </ng-template>
+          </ngb-panel>
+
+        </ngb-accordion>
       </div>
     </ng-template>
   </ng-container>

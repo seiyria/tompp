@@ -45,3 +45,22 @@ html, body {
   justify-content: flex-end;
   align-items: center;
 }
+
+.card-header {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.btn-link {
+  width: 100%;
+
+  .d-flex {
+    width: 100%;
+  }
+}
+
+.btn-sm {
+  max-height: 24px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}

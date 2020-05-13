@@ -1,8 +1,10 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 
+import { LocalStorage } from 'ngx-webstorage';
+
 import { sampleSize, shuffle } from 'lodash';
 import * as YAML from 'js-yaml';
-import { LocalStorage } from 'ngx-webstorage';
+import { saveAs } from 'file-saver';
 
 import { ElectronService } from '../core/services';
 
@@ -22,6 +24,8 @@ export class HomeComponent implements OnInit {
   @LocalStorage()
   public dumpStats: boolean;
 
+  public removeButtonVisibility = {};
+  public currentEditNames = {};
   public version: string;
 
   constructor(
@@ -41,6 +45,10 @@ export class HomeComponent implements OnInit {
     }
 
     if(!this.unrealPak) this.unrealPak = 'UnrealPak.exe';
+
+    Object.keys(this.config.specific || {}).forEach(spec => {
+      this.currentEditNames[spec] = spec;
+    })
   }
 
   loadFile($event): void {
@@ -52,6 +60,12 @@ export class HomeComponent implements OnInit {
     }
 
     reader.readAsText(file);
+  }
+
+  saveFile(): void {
+    const config = YAML.safeDump(this.config);
+    const blob = new Blob([config], { type: 'text/yml' });
+    saveAs(blob, 'config.yml');
   }
 
   setRandomSeed(): void {
@@ -80,6 +94,27 @@ export class HomeComponent implements OnInit {
 
   updateConfig(): void {
     this.config = this.config;
+  }
+
+  addNewConfigSpecificEntry(): void {
+    this.config.specific = this.config.specific || {};
+    this.config.specific['#New_Creature_Edit_Me'] = {};
+    this.config = this.config;
+  }
+
+  updateSpecificKey(oldName: string): void {
+    const newName = this.currentEditNames[oldName];
+    
+    this.currentEditNames[newName] = newName;
+    delete this.currentEditNames[oldName];
+
+    this.config.specific[newName] = Object.assign({}, this.config.specific[oldName]);
+    delete this.config.specific[oldName];
+  }
+
+  removeSpecificKey(key: string): void {
+    delete this.currentEditNames[key];
+    delete this.config.specific[key];
   }
 
   generatePak(): void {
