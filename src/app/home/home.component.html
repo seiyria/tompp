@@ -1,0 +1,116 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Types of Mania Configurator</a>
+
+  <form class="form-inline my-2 my-lg-0 ml-auto">
+    <input type="file" id="file-selector" accept=".yml" class="d-none" (change)="loadFile($event)" #fileLoad>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="fileLoad.click()">Load config.yml</button>
+    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config">Save config.yml</button>
+    <button class="btn btn-outline-success my-2 my-sm-0 ml-3" [disabled]="!config" [class.d-none]="!electronService.isElectron">Generate PAK</button>
+  </form>
+</nav>
+
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+  <ng-container ngbNavItem>
+    <a ngbNavLink>Basics</a>
+    <ng-template ngbNavContent>
+      <div class="blank-slate" *ngIf="!config">
+        Load a config.yml file first
+      </div>
+
+      <div class="p-2" *ngIf="config">
+        <div class="row mb-3">
+          <div class="col-6">
+          </div>
+
+          <div class="col-6 text-right">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-3 left-side">
+            <span ngbTooltip="The random seed to be used for all randomizing purposes." placement="right">Seed</span>
+          </div>
+          <div class="col-9">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Random Seed" [(ngModel)]="config.seed">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="setRandomSeed()">Generate</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-3 left-side">
+            <span ngbTooltip="The directory for your Trials of Mana installation." placement="right">Install To</span>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" placeholder="Install To" [(ngModel)]="config.installTo">
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem [disabled]="!config">
+    <a ngbNavLink>Global Stats</a>
+    <ng-template ngbNavContent>
+      <div class="blank-slate" *ngIf="!config">
+
+      </div>
+      
+      <div class="p-2" *ngIf="config">
+        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+          master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+          keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+          salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem [disabled]="!config">
+    <a ngbNavLink>Enemy Stats</a>
+    <ng-template ngbNavContent>
+      <div class="blank-slate" *ngIf="!config">
+
+      </div>
+      
+      <div class="p-2" *ngIf="config">
+        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+          master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+          keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+          salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem [disabled]="!config">
+    <a ngbNavLink>Shinju Stats</a>
+    <ng-template ngbNavContent>
+      <div class="blank-slate" *ngIf="!config">
+
+      </div>
+      
+      <div class="p-2" *ngIf="config">
+        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+          master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+          keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+          salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem [disabled]="!config">
+    <a ngbNavLink>Specific Stats</a>
+    <ng-template ngbNavContent>
+      <div class="blank-slate" *ngIf="!config">
+
+      </div>
+      
+      <div class="p-2" *ngIf="config">
+        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+          master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+          keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+          salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+</nav>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
