@@ -1,4 +1,5 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, ipcRenderer } from 'electron';
+import * as childProcess from 'child_process';
 import * as Config from 'electron-config';
 import * as path from 'path';
 import * as url from 'url';
@@ -64,6 +65,23 @@ function createWindow(): BrowserWindow {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+  });
+
+  ipcMain.on('get-version', (event) => {
+    try {
+      const executable = {
+        darwin: 'macos',
+        linux: 'linux',
+        win32: 'win.exe'
+      };
+
+      const version = childProcess.execFileSync(path.resolve(`types-of-mania-${executable[process.platform]}`), ['--version']);
+
+      event.reply('set-version', version.toString());
+    } catch(e) {
+      console.error('Could not get app version.');
+      console.error(e);
+    }
   });
 
   return win;

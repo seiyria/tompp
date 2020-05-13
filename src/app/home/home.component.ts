@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 import { sampleSize, shuffle } from 'lodash';
 import * as YAML from 'js-yaml';
@@ -16,9 +16,31 @@ export class HomeComponent implements OnInit {
   @LocalStorage()
   public config: any;
 
-  constructor(public electronService: ElectronService) { }
+  @LocalStorage()
+  public unrealPak: string;
+
+  @LocalStorage()
+  public dumpStats: boolean;
+
+  public version: string;
+
+  constructor(
+    private ngZone: NgZone,
+    public electronService: ElectronService
+  ) { }
 
   ngOnInit(): void {
+    if(this.electronService.isElectron) {
+      this.electronService.ipcRenderer.on('set-version', (event, version) => {
+        this.ngZone.run(() => {
+          this.version = version;
+        });
+      });
+
+      this.electronService.ipcRenderer.send('get-version');
+    }
+
+    if(!this.unrealPak) this.unrealPak = 'UnrealPak.exe';
   }
 
   loadFile($event): void {
@@ -54,6 +76,14 @@ export class HomeComponent implements OnInit {
     ];
 
     return shuffle(sampleSize(possibleSeedValues, 5)).join('-');
+  }
+
+  updateConfig(): void {
+    this.config = this.config;
+  }
+
+  generatePak(): void {
+
   }
 
 }

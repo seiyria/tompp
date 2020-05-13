@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-4" *ngFor="let group of groups">
+    <h5 class="text-center">{{ group.name }}</h5>
+    <div class="row mt-3" *ngFor="let stat of group.stats">
+      <div class="col-1"></div>
+      <div class="col-5 left-side">
+        <label [for]="stat" [ngbTooltip]="descriptions[stat]" placement="right">{{ niceNames[stat] || (stat | uppercase) }}</label>
+      </div>
+      <div class="col-5">
+        <input type="number" class="form-control" [id]="stat" [(ngModel)]="configEditSection[stat]" (change)="updateConfig.emit()">
+      </div>
+      <div class="col-1">
+    </div>
+  </div>
+</div>

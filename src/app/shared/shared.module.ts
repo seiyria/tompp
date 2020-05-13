@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModule, NgbNavModule, NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { PageNotFoundComponent } from './components/';
+import { StatEditorComponent } from './components/';
 import { WebviewDirective } from './directives/';
 
 const sharedModules = [FormsModule, NgbModule, NgbNavModule, NgbButtonsModule, NgbTooltipModule];
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective],
+  declarations: [StatEditorComponent, WebviewDirective],
   imports: [CommonModule, ...sharedModules],
-  exports: [WebviewDirective, ...sharedModules]
+  exports: [StatEditorComponent, WebviewDirective, ...sharedModules]
 })
 export class SharedModule {}
