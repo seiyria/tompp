@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
     const file: File = $event.target.files[0];
     const reader: FileReader = new FileReader();
     reader.onloadend = (e) => {
-      const config = YAML.safeLoad(reader.result);
+      const config = YAML.safeLoad(reader.result as string);
       this.config = config;
     }
 
