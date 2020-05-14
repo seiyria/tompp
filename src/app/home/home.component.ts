@@ -64,9 +64,10 @@ export class HomeComponent implements OnInit {
   loadFile($event): void {
     const file: File = $event.target.files[0];
     const reader: FileReader = new FileReader();
-    reader.onloadend = (e) => {
+    reader.onloadend = () => {
       const config = YAML.safeLoad(reader.result as string);
       this.config = config;
+      $event.target.value = null;
     }
 
     reader.readAsText(file);
