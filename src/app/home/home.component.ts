@@ -128,7 +128,7 @@ export class HomeComponent implements OnInit {
   }
 
   generatePak(): void {
-    this.electronService.ipcRenderer.send('run-app', this.config);
+    this.electronService.ipcRenderer.send('run-app', { config: this.config, dumpStats: this.dumpStats, unrealPak: this.unrealPak });
   }
 
 }

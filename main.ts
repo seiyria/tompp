@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen, ipcMain, ipcRenderer } from 'electron';
-import * as childProcess from 'child_process';
 import * as Config from 'electron-config';
+import * as childProcess from 'child_process';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -53,6 +54,8 @@ function createWindow(): BrowserWindow {
     }));
   }
 
+  win.setMenu(null);
+
   win.once('ready-to-show', win.show);
 
   win.on('close', () => {
@@ -70,17 +73,25 @@ function createWindow(): BrowserWindow {
   return win;
 }
 
-const executable = {
-  darwin: 'macos',
-  linux: 'linux',
-  win32: 'win.exe'
-};
+const dir = process.env.PORTABLE_EXECUTABLE_DIR;
+
+const getExecutable = () => {
+  const executable = {
+    darwin: 'macos',
+    linux: 'linux',
+    win32: 'win.exe'
+  };
+
+  return path.join(dir, `types-of-mania-${executable[process.platform]}`);
+}
+
+ipcMain.on('debug', e => e.reply('display-message', JSON.stringify({ cwd: process.env.INIT_CWD, exe: process.env.PORTABLE_EXECUTABLE_DIR, app: app.getAppPath(), exec: process.execPath, dot: path.resolve('.') })))
 
 ipcMain.on('get-version', (event) => {
   try {
 
     const version = childProcess.execFileSync(
-      path.resolve(`types-of-mania-${executable[process.platform]}`), 
+      getExecutable(), 
       ['--version']
     );
 
@@ -88,26 +99,37 @@ ipcMain.on('get-version', (event) => {
   } catch(e) {
     console.error('Could not get app version.');
     console.error(e);
-
-    event.reply('display-error', 'Could not get app version.');
   }
 });
 
-ipcMain.on('run-app', (event, config) => {
+ipcMain.on('run-app', (event, opts) => {
   try {
 
-    const out = childProcess.execFileSync(
-      path.resolve(`types-of-mania-${executable[process.platform]}`), 
-      [`--configJson=${JSON.stringify(config)}`]
+    const args = [`--configJson=${JSON.stringify(opts.config)}`];
+    if(opts.dumpStats) args.push(`--dumpStats`);
+
+    childProcess.execFile(
+      getExecutable(), 
+      args,
+      (err, stdout) => {
+        if(err) {
+          event.reply('display-error', err);
+          return;
+        }
+
+        console.log(stdout.toString());
+        event.reply('display-message', stdout.toString());
+      }
     );
 
-    console.log(out.toString())
-    event.reply('display-message', out.toString());
   } catch(e) {
-    console.error('Could not run app: ', e.message);
+
+    fs.writeFileSync(dir + '/error.log', e);
+
+    console.error('Could not run app: ', e);
     console.error(e);
 
-    event.reply('display-error', 'Could not run app.');
+    event.reply('display-error', 'Could not run app: ', e.message || e);
   }
 });
 

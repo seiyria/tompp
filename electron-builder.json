@@ -1,10 +1,18 @@
 {
-  "productName": "angular-electron",
+  "productName": "Types of Mania Configurator UI",
   "directories": {
-    "output": "release/"
+    "output": "build/bin/"
   },
     "files": [
         "**/*",
+        "!.github/",
+        "!gamefiles/",
+        "!build/",
+        "!.npmrc",
+        "!.eslint*",
+        "!.gitignore",
+        "!.travis.yml",
+        "!README_MOD.txt",
         "!**/*.ts",
         "!*.code-workspace",
         "!LICENSE.md",
