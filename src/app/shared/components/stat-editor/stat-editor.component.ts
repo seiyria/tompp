@@ -29,9 +29,9 @@ export class StatEditorComponent implements OnInit {
       ]
     },
     {
-      name: 'SPP Stats',
+      name: 'Guard/SPP Stats',
       stats: [
-        'dropSpp', 'knockoutDropSpp', 'lAttackDropSpp', 'chargeAttackDropSpp'
+        'guardDurable', 'downDurable', 'dropSpp', 'knockoutDropSpp', 'lAttackDropSpp', 'chargeAttackDropSpp'
       ]
     }
   ];
@@ -47,6 +47,8 @@ export class StatEditorComponent implements OnInit {
     lucre: 'Lucre On Kill',
     defMag: 'Defensive Magic',
     offMag: 'Offensive Magic',
+    guardDurable: 'Guard Durability',
+    downDurable: 'Break Bar Durability',
     drop1: 'Drop Rate (Item 1)',
     drop2: 'Drop Rate (Item 2)',
     drop3: 'Drop Rate (Item 3)',
@@ -72,6 +74,8 @@ export class StatEditorComponent implements OnInit {
     drop2: 'The drop chance for the item in slot 2 of the enemy\'s item drops.',
     drop3: 'The drop chance for the item in slot 3 of the enemy\'s item drops.',
     dropSpp: 'Unsure. Related to the amount of charge earned for class skills.',
+    guardDurable: 'Unsure. Probably the amount of damage needed to be done to break the enemy.',
+    downDurable: 'Unsure. Probably the amount of damage needed to break the break bar of the enemy. Likely boss only.',
     knockoutDropSpp: 'Unsure. Related to the amount of charge earned for class skills.',
     lAttackDropSpp: 'Unsure. Related to the amount of charge earned for class skills.',
     chargeAttackDropSpp: 'Unsure. Related to the amount of charge earned for class skills.'
