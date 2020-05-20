@@ -64,6 +64,15 @@
 
         <div class="row mt-3">
           <div class="col-3 left-side">
+            <span ngbTooltip="The resulting .pak file name." placement="right">.pak Name</span>
+          </div>
+          <div class="col-9">
+            <input type="text" class="form-control" placeholder="[File Name].pak" [(ngModel)]="pakName">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-3 left-side">
           </div>
           <div class="col-9">
             <div class="form-check">

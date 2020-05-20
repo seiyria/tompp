@@ -19,6 +19,9 @@ export class HomeComponent implements OnInit {
   public config: any;
 
   @LocalStorage()
+  public pakName: string;
+
+  @LocalStorage()
   public unrealPak: string;
 
   @LocalStorage()
@@ -53,6 +56,8 @@ export class HomeComponent implements OnInit {
     }
 
     if(!this.unrealPak) this.unrealPak = 'UnrealPak.exe';
+
+    if(!this.pakName) this.pakName = 'TypesOfMania_P';
 
     if(this.config?.specific) {
       Object.keys(this.config.specific || {}).forEach(spec => {
@@ -129,7 +134,7 @@ export class HomeComponent implements OnInit {
   }
 
   generatePak(): void {
-    this.electronService.ipcRenderer.send('run-app', { config: this.config, dumpStats: this.dumpStats, unrealPak: this.unrealPak });
+    this.electronService.ipcRenderer.send('run-app', { config: this.config, dumpStats: this.dumpStats, unrealPak: this.unrealPak, pakName: this.pakName });
   }
 
 }
